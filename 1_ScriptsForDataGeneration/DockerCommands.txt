@@ -1,0 +1,3 @@
+
+docker cp ./1_ScriptsForDataGeneration/data/. projectpostgresql-postgresql_1-1:/var/lib/postgres/data
+
