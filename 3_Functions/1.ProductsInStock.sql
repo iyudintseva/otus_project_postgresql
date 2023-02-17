@@ -2,7 +2,7 @@ DROP FUNCTION IF EXISTS products_in_stock;
 
 CREATE OR REPLACE FUNCTION products_in_stock(v_city VARCHAR(50), v_product_id INT)
 RETURNS TABLE (id INT, product VARCHAR(500), vendor VARCHAR(500), 
-       price NUMERIC(13,2), quantity INT) AS 
+               price NUMERIC(13,2), quantity INT) AS 
 $BODY$
 
 WITH cte_qty AS 

@@ -10,16 +10,3 @@ docker cp otus_project_postgresql-db_1-1:/var/backups/db.out ./2_Backups/db.out
 
 pg_restore -U postgres --clean --if-exists /var/backups/db.out
 
-!!! Вопросы !!!:
-
-PG_DUMP to sql: данные записываются строчками через пробел, при загрузке выдает ошибку
-если сохраннять в tar - проблем нет
-
-pg_dumpall как потом загружать данные?
-
-pg_restore -U postgres -d myshop /var/backups/myshop.sql
-pg_restore: error: input file appears to be a text format dump. Please use psql.
-
-psql -U postgres -d myshop < /var/backups/myshop.sql
-не ругается, но ничего не создает
-

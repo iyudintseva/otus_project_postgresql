@@ -13,7 +13,7 @@ WITH RECURSIVE cte_cat AS
 cte_prodid AS 
 (
     SELECT pc.productid 
-    FROM logistics.productcategory as pc
+    FROM logistics.productcategory AS pc
     INNER JOIN cte_cat 
     ON pc.categoryid = cte_cat.id
 )
@@ -21,12 +21,12 @@ cte_prodid AS
 cte_qty AS 
 (
     SELECT pb.vendorid, pb.productid, SUM(pb.productcount) AS qty
-    FROM logistics.city as c 
-    INNER JOIN logistics.warehouse as w
+    FROM logistics.city AS c 
+    INNER JOIN logistics.warehouse AS w
         ON w.cityid = c.id AND c.name = v_city   
-    INNER JOIN logistics.warehousebin as wb 
+    INNER JOIN logistics.warehousebin AS wb 
         ON wb.warehouseid = w.id
-    INNER JOIN logistics.productbin as pb 
+    INNER JOIN logistics.productbin AS pb 
         ON pb.binid = wb.id 
     INNER JOIN cte_prodid ON pb.productid = cte_prodid.productid 
     GROUP BY pb.productid, pb.vendorid
@@ -52,7 +52,7 @@ INNER JOIN cte_cost
     AND cte_cost.rnk = 1
 INNER JOIN logistics.product AS p
     ON p.id = cte_qty.productid
-INNER JOIN logistics.vendor as v 
+INNER JOIN logistics.vendor AS v 
     ON v.id = cte_qty.vendorid 
 ORDER BY p.name, v.name;    
 

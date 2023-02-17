@@ -66,7 +66,7 @@ LANGUAGE plpgsql;
 
 CREATE OR REPLACE 
 FUNCTION calc_cte_prod_cost_qty(v_city VARCHAR(50),
-	v_category VARCHAR(50), v_min_price NUMERIC(15,2), v_max_price NUMERIC(15,2),
+    v_category VARCHAR(50), v_min_price NUMERIC(15,2), v_max_price NUMERIC(15,2),
     v_vendor_name VARCHAR(500), v_product_type VARCHAR(20), v_season VARCHAR(20), 
     v_size VARCHAR(8), v_color VARCHAR(20))
 RETURNS VARCHAR(3000) AS
@@ -79,7 +79,7 @@ BEGIN
      cte_cat AS
        (
           SELECT c.id, c.parentid, c.fullname
-          FROM select_categories($2) as c
+          FROM select_categories($2) AS c
        ),
        ';
   END IF;  
@@ -88,14 +88,14 @@ BEGIN
         cte_qty AS 
         (
             SELECT pb.productid, pb.vendorid,  SUM(pb.productcount) AS qty
-            FROM logistics.city as c 
-            INNER JOIN logistics.warehouse as w
+            FROM logistics.city AS c 
+            INNER JOIN logistics.warehouse AS w
                 ON w.cityid = c.id '  || 
             (CASE WHEN (v_city IS NOT NULL AND v_city <> '') 
              THEN ' AND c.name = $1 ' ELSE '' END) || '   
-            INNER JOIN logistics.warehousebin as wb 
+            INNER JOIN logistics.warehousebin AS wb 
                 ON wb.warehouseid = w.id
-            INNER JOIN logistics.productbin as pb 
+            INNER JOIN logistics.productbin AS pb 
                 ON pb.binid = wb.id  
             INNER JOIN logistics.vendor AS v
                ON pb.vendorid = v.id ' || 
@@ -132,9 +132,9 @@ BEGIN
             INNER JOIN cte_qty
             ON cte_cost.productid = cte_qty.productid AND
                cte_cost.vendorid = cte_qty.vendorid
-            INNER JOIN logistics.product as p1
+            INNER JOIN logistics.product AS p1
             ON p1.id = cte_cost.productid
-            INNER JOIN logistics.vendor as v1
+            INNER JOIN logistics.vendor AS v1
             ON v1.id = cte_cost.vendorid
             ' || (CASE WHEN v_max_price > 0 
                   THEN ' WHERE cte_cost.unitcost >= $3 AND cte_cost.unitcost <= $4 ' 
@@ -170,7 +170,7 @@ BEGIN
   v_select_statement := '
    SELECT p.productid, p.productname AS product, 
    p.vendorid, p.vendorname AS vendor,
-   p.price, p.quantity FROM cte_prod_cost_qty as p '; 
+   p.price, p.quantity FROM cte_prod_cost_qty AS p '; 
   
  v_order_by_statement := CONCAT(' 
     ORDER BY ',
